@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new task
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		{{form_start(form)}}
+
+		{{form_widget(form)}}
+		<div class="new-task-buttons">
+			<button type="submit" class="btn btn-primary">Add new task</button>
+			<a href="{{ path('tasks') }}">Cancel</a>
+		</div>
+		{{form_end(form)}}</div>
+
+{% endblock %}

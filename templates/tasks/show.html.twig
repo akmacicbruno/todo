@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Todo app | Dashboard
+{% endblock %}
+
+{% block body %}
+	{% if tasks is defined %}
+		{% set count_done = 0 %}
+		{% set count_upcoming = 0 %}
+		{% for task in tasks %}
+			{% if task.status == 1 %}
+				{% set count_done = count_done + 1 %}
+			{% endif %}
+			{% if task.status == 0 %}
+				{% set count_upcoming = count_upcoming + 1 %}
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+	<p class="container-card-label">Upcoming tasks</p>
+	<div class="container-fluid d-flex flex-wrap container-card">
+		{% if count_upcoming == 0 %}
+			<p class="no_task">You don't have upcoming tasks.</p>
+		{% endif %}
+
+
+		{% for task in tasks %}
+
+			{% if task.status == 0 %}
+
+				<div class="card">
+					<div class="card-body">
+						<div>
+							<h5 class="card-title">{{task.title}}</h5>
+							<p class="card-text">{{task.description}}</p>
+						</div>
+						<div class="card-actions">
+							{% if task.status == 0 %}
+								<div class="buttons">
+									<a href="/tasks/update/{{ task.id }}">
+										<div class="container__menu-content-item container__menu-content-item--hover">
+											<img src="https://img.icons8.com/windows/32/checked--v1.png" alt="done" class="container__menu-content-item-image">
+											<div class="container__menu-content-item-link">
+												<p class="container__menu-content-item-link-text">Done</p>
+											</div>
+										</div>
+									</a>
+									<a href="/tasks/delete/{{ task.id }}">
+										<div class="container__menu-content-item container__menu-content-item--hover">
+											<img src="https://img.icons8.com/ios/100/delete-trash.png" alt="delete_task" class="container__menu-content-item-image">
+										</div>
+									</a>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endif %}
+
+		{% endfor %}
+	</div>
+	<!-- Prikaz obavljenih zadataka, ako ih ima -->
+	<div class="container__done">
+		<p class="container-card-label">Done</p>
+		<div class="container-fluid d-flex flex-wrap container-card">
+
+			{% if count_done == 0 %}
+				<p class="no_task">You don't have solved tasks.</p>
+
+			{% endif %}
+			{% if count_done > 0 %}
+				<table class="table table-hover table-borderless">
+
+					<tbody>
+						{% for task in tasks %}
+							{% if task.status == 1 %}
+
+								<tr>
+									<td>{{task.title}}</td>
+									<td>{{task.description}}</td>
+									<td>
+										<a href="/tasks/delete/{{ task.id }}">
+											<div class="container__menu-content-item container__menu-content-item--hover">
+												<img src="https://img.icons8.com/ios/100/delete-trash.png" alt="delete_task" class="container__menu-content-item-image">
+											</div>
+										</a>
+									</td>
+
+								</tr>
+							{% endif %}
+						{% endfor %}
+
+					</tbody>
+				</table>
+			{% endif %}
+
+
+		</div>
+	</div>
+{% endblock %}
